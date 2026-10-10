@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.env
+.venv/
+venv/
+ENV/
+
+# Railway
+.railway/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
