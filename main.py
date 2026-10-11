@@ -14,11 +14,19 @@ if not TOKEN:
     exit(1)
 
 print(f"Token loaded: {TOKEN[:10]}...")
+
+# پاک کردن Webhook (مشکل اصلی همین بود)
+try:
+    delete_url = f"https://api.telegram.org/bot{TOKEN}/deleteWebhook"
+    response = requests.get(delete_url, timeout=15)
+    print(f"Delete Webhook: {response.text}")
+except Exception as e:
+    print(f"Delete Webhook Error: {e}")
+
 print("Waiting for messages to detect chat_id...")
 print("Send a message to your bot now!")
 print("-" * 40)
 
-# offset برای جلوگیری از پردازش تکراری
 offset = 0
 
 while True:
@@ -43,8 +51,10 @@ while True:
                     print("=" * 40)
                     print("Copy this CHAT_ID to Railway Variables as TELEGRAM_CHAT_ID")
                     print("=" * 40)
+        else:
+            print(f"No messages yet. Status: {data.get('ok')}")
 
     except Exception as e:
         print(f"Error: {e}")
     
-    time.sleep(10)
+    time.sleep(5)
