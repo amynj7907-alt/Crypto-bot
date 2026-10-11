@@ -1,8 +1,12 @@
 import os
 import requests
+import time
 
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+
+# آدرس پروکسی Cloudflare
+PROXY_URL = "https://telegram-proxy.amynj7907.workers.dev"
 
 print("=" * 40)
 print("Crypto-bot started successfully!")
@@ -19,18 +23,19 @@ if not CHAT_ID:
 
 print(f"Token loaded: {TOKEN[:10]}...")
 print(f"Chat ID loaded: {CHAT_ID}")
+print(f"Using Proxy: {PROXY_URL}")
 
-# ارسال پیام تست
-message = "Crypto-bot is alive! Telegram connection works."
+# ارسال پیام تست از طریق پروکسی
+message = "Crypto-bot is alive! Using Cloudflare Proxy."
 
-url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+url = f"{PROXY_URL}/bot{TOKEN}/sendMessage"
 data = {
     "chat_id": CHAT_ID,
     "text": message
 }
 
 try:
-    response = requests.post(url, data=data, timeout=15)
+    response = requests.post(url, data=data, timeout=20)
     result = response.json()
     
     if result.get("ok"):
@@ -47,6 +52,5 @@ except Exception as e:
 print("Done. Bot will stay alive...")
 
 # حلقه بی‌نهایت برای زنده نگه داشتن سرویس
-import time
 while True:
     time.sleep(60)
